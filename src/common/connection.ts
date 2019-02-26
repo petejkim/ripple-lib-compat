@@ -247,25 +247,7 @@ class Connection extends EventEmitter {
   _createWebSocket(): WebSocket {
     const options: WebSocket.ClientOptions = {}
     if (this._proxyURL !== undefined) {
-      const parsedURL = parseUrl(this._url)
-      const parsedProxyURL = parseUrl(this._proxyURL)
-      const proxyOverrides = _.omitBy({
-        secureEndpoint: (parsedURL.protocol === 'wss:'),
-        secureProxy: (parsedProxyURL.protocol === 'https:'),
-        auth: this._proxyAuthorization,
-        ca: this._trustedCertificates,
-        key: this._key,
-        passphrase: this._passphrase,
-        cert: this._certificate
-      }, _.isUndefined)
-      const proxyOptions = _.assign({}, parsedProxyURL, proxyOverrides)
-      let HttpsProxyAgent
-      try {
-        HttpsProxyAgent = require('https-proxy-agent')
-      } catch (error) {
-        throw new Error('"proxy" option is not supported in the browser')
-      }
-      options.agent = new HttpsProxyAgent(proxyOptions)
+      throw new Error('"proxy" option is not supported')
     }
     if (this._authorization !== undefined) {
       const base64 = new Buffer(this._authorization).toString('base64')

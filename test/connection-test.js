@@ -59,35 +59,6 @@ describe('Connection', function() {
     assert.deepEqual(messages, [message1, message2]);
   });
 
-  it('with proxy', function(done) {
-    if (process.browser) {
-      done();
-      return;
-    }
-    createServer().then(server => {
-      const port = server.address().port;
-      const expect = 'CONNECT localhost';
-      server.on('connection', socket => {
-        socket.on('data', data => {
-          const got = data.toString('ascii', 0, expect.length);
-          assert.strictEqual(got, expect);
-          server.close();
-          done();
-        });
-      });
-
-      const options = {
-        proxy: 'ws://localhost:' + port,
-        authorization: 'authorization',
-        trustedCertificates: ['path/to/pem']
-      };
-      const connection =
-        new utils.common.Connection(this.api.connection._url, options);
-      connection.connect().catch(done);
-      connection.connect().catch(done);
-    }, done);
-  });
-
   it('Multiply disconnect calls', function() {
     this.api.disconnect();
     return this.api.disconnect();
