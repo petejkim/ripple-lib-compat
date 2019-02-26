@@ -1,6 +1,5 @@
 import * as _ from 'lodash'
 import {EventEmitter} from 'events'
-import {parse as parseUrl} from 'url'
 import * as WebSocket from 'ws'
 import RangeSet from './rangeset'
 import {RippledError, DisconnectedError, NotConnectedError,
@@ -25,7 +24,6 @@ class Connection extends EventEmitter {
   private _trace: boolean
   private _console?: Console
   private _proxyURL?: string
-  private _proxyAuthorization?: string
   private _authorization?: string
   private _trustedCertificates?: string[]
   private _key?: string
@@ -54,7 +52,6 @@ class Connection extends EventEmitter {
       this._console = console
     }
     this._proxyURL = options.proxy
-    this._proxyAuthorization = options.proxyAuthorization
     this._authorization = options.authorization
     this._trustedCertificates = options.trustedCertificates
     this._key = options.key
